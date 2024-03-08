@@ -1,0 +1,4 @@
+a ) utilisez GDB pour trouver l’erreur
+
+b) l'erreur est une stack overflow due à l'utilisation excessive de la récursion dans la fonction fibonacci avec une valeur de n aussi grande que 50
+

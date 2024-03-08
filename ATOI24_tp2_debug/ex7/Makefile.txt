@@ -1,0 +1,13 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -pthread
+
+all: program
+
+program: main.o
+    $(CC) $(CFLAGS) $^ -o $@
+
+main.o: main.c
+    $(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+    rm -f *.o program

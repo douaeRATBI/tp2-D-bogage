@@ -1,0 +1,34 @@
+a)i) Un thread, également appelé processus léger, est une séquence d'instructions exécutées de manière concurrente avec d'autres threads dans le même programme. Les threads partagent généralement le même espace d'adressage et d'autres ressources du processus parent, telles que les variables globales, les fichiers ouverts et les descripteurs de fichiers. Ils sont souvent utilisés pour exécuter des tâches en parallèle et améliorer les performances des programmes en exploitant les ressources matérielles multicœurs.
+
+ii) Un mutex (abréviation de "mutual exclusion") est un verrou de synchronisation utilisé pour gérer l'accès concurrentiel à des ressources partagées par plusieurs threads. Lorsqu'un thread verrouille un mutex, il signale qu'il souhaite accéder à la ressource protégée. Les autres threads qui tentent d'acquérir le même mutex doivent attendre jusqu'à ce que le mutex soit libéré par le thread qui le détient. Cela permet de garantir que les opérations critiques ne sont pas exécutées simultanément par plusieurs threads.
+
+iii) Le code fourni est un exemple d'utilisation de threads en C à l'aide de la bibliothèque pthread (POSIX Threads). Il crée deux threads (thread1 et thread2) qui tentent d'acquérir et de libérer deux mutex (lock1 et lock2) dans un ordre spécifique. Chaque thread simule également un court délai pour simuler un travail. Le but du code est de démontrer l'utilisation des mutex pour synchroniser l'accès à des ressources partagées et éviter les conditions de concurrence. Cependant, le code présente un problème de verrouillage mutuel (deadlock) potentiel, car chaque thread attend que l'autre libère un mutex tout en maintenant un autre mutex, ce qui peut conduire à un blocage si les threads ne se débloquent pas mutuellement.
+
+b) i ) gcc: Le compilateur C GNU, qui est utilisé pour compiler le code source C en fichiers objet et lier ces fichiers objet pour créer le programme exécutable.
+-pthread: L'option de compilation pour GCC qui inclut le support pour les threads POSIX (pthread). Cette option est nécessaire lors de l'utilisation de la bibliothèque pthread sur les systèmes Unix-like.
+make: L'outil de build automation qui utilise le Makefile pour décrire comment compiler et lier les fichiers source en un programme exécutable.
+Commandes de shell standard: Le Makefile utilise des commandes de shell standard telles que rm pour supprimer des fichiers, ainsi que des variables et des règles de construction communes
+
+c ) Le code ne se termine jamais en raison d'un problème de verrouillage mutuel, également connu sous le nom de deadlock. Cela se produit lorsque deux ou plusieurs threads se bloquent mutuellement en attendant des ressources détenues par d'autres threads, créant une impasse où aucun thread ne peut progresser. Dans ce cas, thread1 attend que lock2 soit libéré par thread2, tandis que thread2 attend que lock1 soit libéré par thread1, ce qui entraîne un blocage des deux threads indéfiniment
+
+i) Pour afficher l'état du programme avec GDB, vous pouvez utiliser la commande info threads pour obtenir la liste des threads actifs, puis sélectionner un thread spécifique avec la commande thread <numéro> où <numéro> est l'identifiant du thread, suivi de la commande backtrace (ou bt) pour afficher la trace d'exécution de ce thread
+
+ii) Voici comment vous pouvez mettre en œuvre cela dans GDB : 
+(gdb) info threads
+  Id   Target Id              Frame 
+  2    Thread 0x7ffff7fa5700 (LWP 13098) "a.out" thread2 () at main.c:23
+* 1    Thread 0x7ffff7fb6740 (LWP 13097) "a.out" thread1 () at main.c:9
+
+(gdb) thread 1
+[Switching to thread 1 (Thread 0x7ffff7fb6740 (LWP 13097))]
+#0  thread1 () at main.c:9
+9           printf("Thread 1: Tente d'obtenir lock1\n");
+
+(gdb) bt
+#0  thread1 () at main.c:9
+#1  0x00007ffff7bc58a4 in start_thread (arg=<optimized out>) at pthread_create.c:486
+#2  0x00007ffff794229f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+iii)La commande thread apply all bt dans GDB applique la commande bt (backtrace) à tous les threads actifs du programme en cours de débogage. Cela signifie qu'elle affiche la trace d'exécution de chaque thread, montrant les fonctions dans lesquelles chaque thread est actuellement en cours d'exécution ou en attente
+
+d ) on utilise la commande : -pthread /tmp/RiijvAgOow.c
