@@ -1,8 +1,0 @@
-b) La somme des éléments du tableau est : 32780
-d)  Le bug dans le programme réside dans la condition de la boucle for :
-for (int i = 0; i <= 5; i++)
-Dans cette condition, la boucle itère de 0 à 5, inclusivement. Cependant, le tableau array a des indices valides de 0 à 4, car il contient 5 éléments (array[0] jusqu'à array[4]).
-
-Lorsque i atteint la valeur 5, la boucle continue de s'exécuter  ce qui entraîne un accès en dehors des limites du tableau. Cela signifie que lors de la dernière itération de la boucle, lorsque i vaut 5 le programme tente d'accéder à array[5], ce qui est en dehors des limites du tableau. C'est ce qu'on appelle un dépassement de tableau, et cela provoque un comportement indéfini, qui peut inclure des plantages du programme ou des résultats incorrects
-
-
